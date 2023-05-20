@@ -25,7 +25,9 @@ function ImageHideBlock({ box }) {
         <Animated.View style={{ opacity: fadeAnim }}>
             <View
                 key={id}
-                style={{ top: top, left: left, width: 100, height: 100, backgroundColor: 'white', zIndex: 3, position: 'absolute' }}
+                style={{ top: top, left: left, width: 100, height: 100, 
+                    opacity: willHide ? 0 : 1,
+                    backgroundColor: 'white', position: 'absolute' }}
             />
         </Animated.View>
     )

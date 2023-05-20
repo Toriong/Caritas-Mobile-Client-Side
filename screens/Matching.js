@@ -1,43 +1,24 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { View, Animated, SafeAreaView, Platform, StyleSheet, Image, PanResponder, Dimensions, Text } from "react-native";
 import { useEffect, useRef, useState } from 'react';
-import Swipe from '../components/Animations/Swipe';
 import QuestionBtn from '../components/Suitor/button/Question';
 import GetToKnowUserModal from '../components/Suitor/modal/GetToKnowUserModal';
-import WantToMatchWithUserModal from '../components/Suitor/modal/WantToMatchWithUser';
 import questions from '../testing-data/questions.json';
 import Swiper from 'react-native-deck-swiper'
 import User from '../components/Suitor/user/User';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faArrowAltCircleRight, faArrowAltCircleLeft, faHeart, faThumbsDown, faMeh } from '@fortawesome/free-solid-svg-icons'
+import { faHeart, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, PURLPLE_BTN_COLOR } from '../global-styles/globalStyles';
 import { HEART_COLOR } from '../global-styles/globalStyles';
 import { PTxt } from '../components/customTxts';
 import FadeUp from '../components/Animations/FadeUp';
-import Backdrop from '../components/CustomBackdrop';
 
 const { height } = Dimensions.get('window');
-
-// GOAL: 
-// when the user likes an answer for a question, do the following:
-// find the target user in the testing_users array
-// once the target user is found, set willRevealPic to true
-// within the User comp, if willRevealPic is true, then show parts of the image to the user
-// after the images are revealed, then set willRevealPic to false for the specific user   
-
-
-// parts of the image is revealed to the user. After that, willRevealPic is set to false for the specific user.
-// random values of the boxes array is set to false in order to show the parts of the images to the user
-// willRevealPic is set to true
-// the target user is found from the potentialMatches array
-// using the id of the user, find the user in the potentialMatches array
-// the user clicks the like button for an answer
-
 
 const TESTING_USERS = [
     {
         id: 1,
-        imgPath: require('../assets/testImgs/test-img-2.jpg'),
+        imgPath: require('../assets/testImgs/test-img-1.jpg'),
         name: 'Emma',
         top: 0,
         willRevealPic: false,
@@ -52,7 +33,7 @@ const TESTING_USERS = [
     },
     {
         id: 2,
-        imgPath: require('../assets/testImgs/test-img-1.jpg'),
+        imgPath: require('../assets/testImgs/test-img-2.jpg'),
         name: 'Olivia',
         willRevealPic: false,
         top: 10,
@@ -89,7 +70,7 @@ function Matching() {
     const [position, setPosition] = useState(new Animated.ValueXY());
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
     const [willShowQsModal, setWillShowQsModal] = useState(false);
-    const [userQuestions, setUserQuestions] = useState(questions);
+    const [userQuestions, setUserQuestions] = useState(questions.slice(0, 5));
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);

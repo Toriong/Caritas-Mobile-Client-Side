@@ -29,7 +29,7 @@ import ImageHideBlock from "../ImageHideBlock";
 //   ];
 
 
-const BOXES_NOT_TO_FADE_OUT = [16, 11, 21, 22, 23, 18, 13, 6, 7, 8, 25, 26, 27, 28, 29];
+const BOXES_NOT_TO_FADE_OUT = [6, 7, 8, 11, 12, 13, 18, 17, 16];
 
 
 
@@ -58,6 +58,7 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
     const [boxes, setBoxes] = useState([]);
     const [boxesToFadeOutInt, setBoxesToFadeOutInt] = useState(10)
+    const [lastBoxesToFadeOut, setLastBoxesToFadeOut] = useState([{ id: 1, wasFadedOut: false, boxIds: [{ id: 25 }, { id: 26 }] }, { id: 2, wasFadedOut: false, boxIds: [{ id: 27 }] }, { id: 3, wasFadedOut: false, boxIds: [{ id: 28 }] }, { id: 4, wasFadedOut: false, boxIds: [{ id: 29 }] }])
     const [willGetBoxesNumToFadeOut, setWillGetBoxesNumToFadeOut] = useState(false)
     const [position, setPosition] = useState(new Animated.ValueXY());
     const panResponder = PanResponder.create({
@@ -80,10 +81,24 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
 
     useEffect(() => {
         if (willRevealPic) {
-            const unfadedOutBoxes = boxes.filter(({ id }) => !BOXES_NOT_TO_FADE_OUT.includes(id)).filter(box => !box.willFadeOut);
-            const boxesToFadeOut = getRandomVals(unfadedOutBoxes, boxesToFadeOutInt)
-            console.log('boxesToFadeOut: ', boxesToFadeOut)
-            const boxesToFadeOutIds = willRevealRestOfPic ? unfadedOutBoxes.map(({ id }) => id) : boxesToFadeOut.map(box => box.id);
+            const unfadedOutBoxes = boxes.filter(box => !BOXES_NOT_TO_FADE_OUT.includes(box.id)).filter(box => !box.willFadeOut);
+            let boxesToFadeOut = getRandomVals(unfadedOutBoxes, boxesToFadeOutInt)
+
+            if (!boxesToFadeOut[0]) {
+                console.log('fuck you')
+                // GOAL: go through each of the elements in lastBoxesToFadeout array
+                const { boxIds, id } = lastBoxesToFadeOut.find(({ wasFadedOut }) => !wasFadedOut);
+                boxesToFadeOut = boxIds;
+                setLastBoxesToFadeOut(box => {
+                    if (box.id === id) {
+                        return { ...box, wasFadedOut: true }
+                    }
+                    return box;
+                })
+
+            };
+
+            let boxesToFadeOutIds = boxesToFadeOut.map(({ id }) => id);
 
             setBoxes(boxes => boxes.map(box => {
                 if (boxesToFadeOutIds.includes(box.id)) {
@@ -115,6 +130,7 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
             const cols = Math.ceil(width / boxSize);
             const totalBoxes = rows * cols;
             const newBoxes = [];
+            console.log('boxSize: ', boxSize)
 
             for (let index = 0; index < totalBoxes; index++) {
                 const boxTop = Math.floor(index / cols) * boxSize;
@@ -123,7 +139,6 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
                     id: index,
                     top: boxTop,
                     left: boxLeft,
-                    size: boxSize,
                     willFadeOut: false
 
                 });
