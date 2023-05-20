@@ -18,26 +18,28 @@ function WantToMatchWithUserModal({ username = "Judy", _isModalOn }) {
         setIsModalOn(false)
     }
 
-    function handleSendAReqBtnTouch(){
+    function handleSendAReqBtnTouch() {
         setIsModalOn(false)
     }
 
     return (
-        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={styles.modal} coverScreen={false}>
-            <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>
-            </View>
-            <View style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                <TouchableOpacity onPress={handleThumbsDownBtnTouch} style={{ ...styles.thumbsDown, borderWidth: .5, borderColor: '#798188' }}>
-                    <PTxt>Pass.</PTxt>
-                    <FontAwesomeIcon icon={faThumbsDown} style={{ marginTop: 10 }} size={PixelRatio.get() < 2 ? 20 : 25} color={EMOJI_SKIN_COLOR_DEFAULT} />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={handleSendAReqBtnTouch} style={styles.heartBtn}>
-                    <PTxt>Send a request!</PTxt>
-                    <Animated.View style={{ transform: [{ scale: pulseAnim }], marginTop: 10 }}>
-                        <FontAwesomeIcon icon={faHeart} size={PixelRatio.get() < 2 ? 20 : 25} color={HEART_COLOR} />
-                    </Animated.View>
-                </TouchableOpacity>
+        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal, zIndex: 10 }} coverScreen={false}>
+            <View>
+                <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>
+                </View>
+                <View style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
+                    <TouchableOpacity onPress={handleThumbsDownBtnTouch} style={{ ...styles.thumbsDown, borderWidth: .5, borderColor: '#798188' }}>
+                        <PTxt>Pass.</PTxt>
+                        <FontAwesomeIcon icon={faThumbsDown} style={{ marginTop: 10 }} size={PixelRatio.get() < 2 ? 20 : 25} color={EMOJI_SKIN_COLOR_DEFAULT} />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={handleSendAReqBtnTouch} style={styles.heartBtn}>
+                        <PTxt>Send a request!</PTxt>
+                        <Animated.View style={{ transform: [{ scale: pulseAnim }], marginTop: 10 }}>
+                            <FontAwesomeIcon icon={faHeart} size={PixelRatio.get() < 2 ? 20 : 25} color={HEART_COLOR} />
+                        </Animated.View>
+                    </TouchableOpacity>
+                </View>
             </View>
         </Modal>
     )

@@ -32,20 +32,6 @@ const { height } = Dimensions.get('window');
 // using the id of the user, find the user in the potentialMatches array
 // the user clicks the like button for an answer
 
-function getRandomVals(arr, num) {
-    const result = [];
-
-    new Array(num).fill(0).forEach(() => {
-        const randomIndex = Math.floor(Math.random() * arr.length);
-        const randomValue = arr[randomIndex];
-
-        if (!result.includes(randomValue)) {
-            result.push(randomValue);
-        }
-    });
-
-    return result;
-};
 
 const TESTING_USERS = [
     {
@@ -105,7 +91,13 @@ function Matching() {
     const [userQuestions, setUserQuestions] = useState(questions);
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
-    const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);
+    const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(true);
+
+    useEffect(() => {
+        setTimeout(() => {
+            setWillShowQsModal(true)
+        }, 1000);
+    }, [])
     const statesForGetToKnowUserModal = { _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (event, gestureState) => true,
@@ -207,70 +199,74 @@ function Matching() {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
     }
 
-    return (
-        // <SafeAreaView style={screenStyles.container}>
-        <LinearGradient
-            colors={['#D9AFD9', '#97D9E1']}
-            start={{ x: 0.5, y: 0 }}
-            end={{ x: 0.5, y: 1 }}
-            style={styles.gradient}
-        >
-            <View style={{ flex: 1, position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <View style={{ position: 'relative', width: '100%', height: '100%' }}>
-                    <Swiper
-                        ref={swiperRef}
-                        cards={potentialMatches}
-                        containerStyle={{ flex: 1, backgroundColor: 'transparent', borderWidth: 1, position: 'relative' }}
-                        renderCard={potentialMatch => (
-                            <FadeUp delayMs={100} dynamicStyles={{ height: height * .8 }}>
-                                <User potentialMatches={potentialMatches} willRevealRestOfPic={willRevealRestOfPic} totalQuestionsInt={userQuestions.length} handleOnLayout={handleOnLayoutUserModal} user={potentialMatch} setPotentialMatches={setPotentialMatches} />
-                            </FadeUp>
-                        )}
 
-                        // onSwipedLeft={handleOnSwipedLeft}
-                        // onSwipedRight={handleOnSwipedRight}
-                        disableBottomSwipe
-                        disableTopSwipe
-                        animateCardOpacity
-                        animateOverlayLabelsOpacity
-                        overlayLabels={{
-                            left: {
-                                element: (
-                                    <View style={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', top: 0, right: 0, height: '10%' }}>
-                                        <View style={{ borderColor: 'red', backgroundColor: 'red', borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                                            <PTxt style={{ color: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center', borderColor: BTN_TXT_LIGHT_COLOR, alignItems: 'center' }}>
-                                                NAHHH...
-                                                <FontAwesomeIcon icon={faThumbsDown} color={EMOJI_SKIN_COLOR_DEFAULT} />
-                                            </PTxt>
-                                        </View>
-                                    </View>
-                                ),
-                                title: 'NOPE'
-                            },
-                            right: {
-                                element: (
-                                    <View style={{ display: 'flex', justifyContent: 'flex-end', height: "10%" }}>
-                                        <View style={{ borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', borderColor: PURLPLE_BTN_COLOR, backgroundColor: PURLPLE_BTN_COLOR, justifyContent: 'center', alignItems: 'center' }}>
-                                            <PTxt style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'white'}}>
-                                                LIKE
-                                                <FontAwesomeIcon icon={faHeart} color={HEART_COLOR} style={{ transform: [{ translateY: 2 }, { translateX: 2 }] }} />
-                                            </PTxt>
-                                        </View>
-                                    </View>
-                                ),
-                                title: 'LIKE' 
-                            }
-                        }}
-                    />
-                </View>
-            </View>
-            <View style={{ ...btns.container, position: 'absolute', bottom: 0, width: '100%', height: (height * .15), display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                <QuestionBtn handleOnPress={handleOnQBtnTouch} />
-            </View>
+
+    return (
+        <>
+            <LinearGradient
+                colors={['#D9AFD9', '#97D9E1']}
+                start={{ x: 0.5, y: 0 }}
+                end={{ x: 0.5, y: 1 }}
+                style={styles.gradient}
+            >
+                <SafeAreaView style={{ width: "100%", height: "100%" }}>
+                    <View style={{ flex: 1, position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <View style={{ position: 'relative', width: '100%', height: '100%' }}>
+                            <Swiper
+                                ref={swiperRef}
+                                cards={potentialMatches}
+                                containerStyle={{ flex: 1, backgroundColor: 'transparent', borderWidth: 1, position: 'relative' }}
+                                renderCard={potentialMatch => (
+                                    <FadeUp delayMs={100} dynamicStyles={{ height: height * .8 }}>
+                                        <User potentialMatches={potentialMatches} willRevealRestOfPic={willRevealRestOfPic} totalQuestionsInt={userQuestions.length} handleOnLayout={handleOnLayoutUserModal} user={potentialMatch} setPotentialMatches={setPotentialMatches} />
+                                    </FadeUp>
+                                )}
+
+                                // onSwipedLeft={handleOnSwipedLeft}
+                                // onSwipedRight={handleOnSwipedRight}
+                                disableBottomSwipe
+                                disableTopSwipe
+                                animateCardOpacity
+                                animateOverlayLabelsOpacity
+                                overlayLabels={{
+                                    left: {
+                                        element: (
+                                            <View style={{ display: 'flex', justifyContent: 'flex-end', position: 'absolute', top: 0, right: 0, height: '10%' }}>
+                                                <View style={{ borderColor: 'red', backgroundColor: 'red', borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                                                    <PTxt style={{ color: 'white', display: 'flex', flexDirection: 'row', justifyContent: 'center', borderColor: BTN_TXT_LIGHT_COLOR, alignItems: 'center' }}>
+                                                        NAHHH...
+                                                        <FontAwesomeIcon icon={faThumbsDown} color={EMOJI_SKIN_COLOR_DEFAULT} />
+                                                    </PTxt>
+                                                </View>
+                                            </View>
+                                        ),
+                                        title: 'NOPE'
+                                    },
+                                    right: {
+                                        element: (
+                                            <View style={{ display: 'flex', justifyContent: 'flex-end', height: "10%" }}>
+                                                <View style={{ borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', borderColor: PURLPLE_BTN_COLOR, backgroundColor: PURLPLE_BTN_COLOR, justifyContent: 'center', alignItems: 'center' }}>
+                                                    <PTxt style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
+                                                        LIKE
+                                                        <FontAwesomeIcon icon={faHeart} color={HEART_COLOR} style={{ transform: [{ translateY: 2 }, { translateX: 2 }] }} />
+                                                    </PTxt>
+                                                </View>
+                                            </View>
+                                        ),
+                                        title: 'LIKE'
+                                    }
+                                }}
+                            />
+                        </View>
+                    </View>
+                    <View style={{ ...btns.container, position: 'absolute', bottom: 0, width: '100%', height: (height * .15), display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                        <QuestionBtn handleOnPress={handleOnQBtnTouch} />
+                    </View>
+                </SafeAreaView>
+            </LinearGradient>
             <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setIsWantToMatchWithUserModalOn, setPotentialMatches, setWillRevealRestOfPic }} />
             <WantToMatchWithUserModal _isModalOn={[isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn]} />
-        </LinearGradient>
-        // </SafeAreaView>
+        </>
     )
 }
 

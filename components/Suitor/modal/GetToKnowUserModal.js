@@ -10,6 +10,7 @@ import HeartAnimation from '../../Animations/HeartAnimation';
 import Glow from '../../Animations/Glow';
 import { getAnimSequenceArr } from '../../../helperFns/components';
 import FadeInView from '../../Animations/FadeIn';
+import WantToMatchWithUserModal from './WantToMatchWithUser';
 
 
 const USER_INTERACTION_ICON_SIZE = 25;
@@ -340,7 +341,7 @@ function GetToKnowUserModal({ states, fns }) {
     }, [scrollViewChildHeight, scrollViewLayoutHeight])
 
     return (
-        <Modal onModalShow={handleOnModalShow} onModalHide={handleClosingModal} isVisible={isModalOn} useNativeDriver hideModalContentWhileAnimating={true} animationOut="slideOutDown" onBackdropPress={handleClosingModal} style={style.main}>
+        <Modal onModalShow={handleOnModalShow} onModalHide={handleClosingModal} isVisible={isModalOn} useNativeDriver animationOut="slideOutDown" onBackdropPress={handleClosingModal} style={{ ...style.main }}>
             <View style={{ backgroundColor: 'white', borderRadius: 10, height: "99%", width: "100%" }}>
                 <View style={{ width: "100%", flex: .3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center' }}>
                     <HeadingTxt fontSize={19}>Questions/Answers and Stories</HeadingTxt>
@@ -350,7 +351,7 @@ function GetToKnowUserModal({ states, fns }) {
                     <PTxt style={{ textAlign: 'center', fontStyle: 'italic' }}>{question}</PTxt>
                 </View>
                 <View style={{ flex: 2, display: 'flex', justifyContent: 'center', alignItems: 'center', position: 'relative' }}>
-                    {(<FadeUpAndOut delayMs={500} willFadeOut={willFadeOutShowAnswerBtn} dynamicStyles={{ ...viewStylesCommon.main, display: showAnsBtnDisplayVal }} _willFadeIn={_willFadeShowAnswerBtnIn}>
+                    <FadeUpAndOut delayMs={500} willFadeOut={willFadeOutShowAnswerBtn} dynamicStyles={{ ...viewStylesCommon.main, display: showAnsBtnDisplayVal }} _willFadeIn={_willFadeShowAnswerBtnIn}>
                         <TouchableOpacity onPress={revealAnswer} style={{ ...GLOBAL_ELEMENT_SHADOW_STYLES.main, opacity: isNoResponse ? 1 : 0, backgroundColor: BACKGROUND_COLOR_BTN, justifyContent: 'center', alignItems: 'center', display: 'flex', flexDirection: 'column', padding: 15, borderRadius: 50 }}>
                             <PTxt style={{ color: BTN_TXT_LIGHT_COLOR }}>
                                 Show Answer
@@ -359,7 +360,7 @@ function GetToKnowUserModal({ states, fns }) {
                                 😊
                             </PTxt>
                         </TouchableOpacity>
-                    </FadeUpAndOut>)}
+                    </FadeUpAndOut>
                     {willShowAnswer && (
                         <View style={{ width: "100%" }}>
                             <FadeUpAndOut willFadeOut={willFadeOutAnsUI} delayMs={500} dynamicStyles={{ position: 'relative', height: "83%" }} _willFadeIn={_willFadeInAnswersUI}>
@@ -443,7 +444,6 @@ const btnCss = {
     height: 55,
     borderRadius: 50,
 }
-const dynamicStylesChangeColor = StyleSheet.create({ main: { ...btnCss } })
 const userResponsesBtnStyles = StyleSheet.create({
     main: {
         ...GLOBAL_ELEMENT_SHADOW_STYLES.main,
