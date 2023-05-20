@@ -1,0 +1,98 @@
+[
+    {
+        "id": "question-1",
+        "isStory": false,
+        "question": "Would you rather have spaghetti for hair or pizza for hands?",
+        "answer": {
+            "txt": "I would rather have spaghetti for hair because it would be a great conversation starter and I could always tie it back if I needed to.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-0",
+        "question": "What's the funniest thing that has happened to you recently?",
+        "isStory": true,
+        "answer": {
+            "txt": "I was walking down the street when a squirrel suddenly jumped onto my shoulder and started nibbling on my ear. It startled me, and I instinctively started dancing around, trying to shake it off. Passersby were looking at me like I had lost my mind, and I couldn't help but laugh at the ridiculousness of the situation. Eventually, the squirrel got bored and scurried away, leaving me with a funny anecdote to share with my friends.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-2",
+        "isStory": false,
+        "question": "Would you rather be able to talk to animals or speak every human language fluently?",
+        "answer": {
+            "txt": "I would rather be able to talk to animals because it would be amazing to communicate with all the different creatures in the world.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-3",
+        "isStory": false,
+        "question": "Would you rather be able to breathe underwater or fly?",
+        "answer": {
+            "txt": "I would rather be able to breathe underwater because it would be incredible to explore the ocean and all its wonders.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-4",
+        "isStory": false,
+        "question": "Would you rather have a pet unicorn or a pet dragon?",
+        "answer": {
+            "txt": "I would rather have a pet unicorn because they are majestic and magical creatures.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-5",
+        "isStory": false,
+        "question": "Would you rather be able to talk to plants or have them do your bidding?",
+        "answer": {
+            "txt": "I would rather be able to talk to plants because they have so much wisdom and knowledge to share.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-6",
+        "isStory": false,
+        "question": "Would you rather have a personal robot assistant or a magical genie?",
+        "answer": {
+            "txt": "I would rather have a personal robot assistant because they would be practical and helpful in my daily life.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    },
+    {
+        "id": "question-7",
+        "isStory": false,
+        "question": "Would you rather have a permanent clown nose or permanent clown shoes?",
+        "answer": {
+            "txt": "I would rather have a permanent clown nose because it would be smaller and less noticeable.",
+            "isLiked": false,
+            "isNeutral": false,
+            "isNoResponse": true,
+            "isDisliked": false
+        }
+    }
+]
