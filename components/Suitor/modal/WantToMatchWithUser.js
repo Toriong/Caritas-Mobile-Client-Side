@@ -23,7 +23,7 @@ function WantToMatchWithUserModal({ username = "Judy", _isModalOn }) {
     }
 
     return (
-        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal, zIndex: 10 }} coverScreen={false}>
+        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal }} coverScreen={false}>
             <View>
                 <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>

@@ -25,10 +25,10 @@ function getQuestionToDisplayAndItsIndex(questions, questionId, numToAddToIndex 
 
 
 function GetToKnowUserModal({ states, fns }) {
-    const { _isModalOn, _qIdOfLikedAns, _questions } = states;
-    const { setIsWantToMatchWithUserModalOn, setWillRevealRestOfPic } = fns;
+    const { _isModalOn, _qIdOfLikedAns, _questions, _isWantToMatchWithUserModalOn } = states;
+    const { setWillRevealRestOfPic } = fns;
     const [isModalOn, setIsModalOn] = _isModalOn;
-    const [qIdOfLikedAns, setQIdOfLikedAns] = _qIdOfLikedAns;
+    const [, setQIdOfLikedAns] = _qIdOfLikedAns;
     const [questions, setQuestions] = _questions;
     const [willFadeOutShowAnswerBtn, setWillFadeOutShowAnswerBtn] = useState(false);
     const { question, answer, isCurrent, id } = questions.find(({ isCurrent }) => isCurrent) ?? questions[0]
@@ -300,7 +300,7 @@ function GetToKnowUserModal({ states, fns }) {
     useEffect(() => {
         if (isOnLastQ && (isLiked || isDisliked || isNeutral) && !wasIsWantToMatchWithUserModalOn && isModalOn) {
             setTimeout(() => {
-                setIsWantToMatchWithUserModalOn(true);
+                _isWantToMatchWithUserModalOn[1](true);
             }, 500)
             setWasIsWantToMatchWithuserModalOn(true);
         }
@@ -435,7 +435,7 @@ function GetToKnowUserModal({ states, fns }) {
                     </View>
                 </View>
             </View>
-            <WantToMatchWithUserModal _isModalOn={[true, () => {}]} />
+            <WantToMatchWithUserModal _isModalOn={_isWantToMatchWithUserModalOn} />
         </Modal>
     )
 }

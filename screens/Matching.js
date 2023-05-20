@@ -92,7 +92,7 @@ function Matching() {
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(true);
-    const statesForGetToKnowUserModal = { _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
+    const statesForGetToKnowUserModal = { _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (event, gestureState) => true,
         onPanResponderMove: (event, gestureState) => {
@@ -258,7 +258,7 @@ function Matching() {
                     </View>
                 </SafeAreaView>
             </LinearGradient>
-            <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setIsWantToMatchWithUserModalOn, setPotentialMatches, setWillRevealRestOfPic }} />
+            <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic }} />
         </>
     )
 }
