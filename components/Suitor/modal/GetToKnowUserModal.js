@@ -435,6 +435,7 @@ function GetToKnowUserModal({ states, fns }) {
                     </View>
                 </View>
             </View>
+            <WantToMatchWithUserModal _isModalOn={[true, () => {}]} />
         </Modal>
     )
 }

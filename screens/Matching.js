@@ -87,17 +87,11 @@ function Matching() {
     const [boxes, setBoxes] = useState([]);
     const [position, setPosition] = useState(new Animated.ValueXY());
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
-    const [willShowQsModal, setWillShowQsModal] = useState(false);
+    const [willShowQsModal, setWillShowQsModal] = useState(true);
     const [userQuestions, setUserQuestions] = useState(questions);
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(true);
-
-    useEffect(() => {
-        setTimeout(() => {
-            setWillShowQsModal(true)
-        }, 1000);
-    }, [])
     const statesForGetToKnowUserModal = { _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (event, gestureState) => true,
@@ -265,7 +259,6 @@ function Matching() {
                 </SafeAreaView>
             </LinearGradient>
             <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setIsWantToMatchWithUserModalOn, setPotentialMatches, setWillRevealRestOfPic }} />
-            <WantToMatchWithUserModal _isModalOn={[isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn]} />
         </>
     )
 }
