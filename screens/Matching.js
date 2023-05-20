@@ -75,6 +75,7 @@ function Matching() {
     const [userQuestions, setUserQuestions] = useState(questions.slice(0, 5));
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
+    const [isMatchReqSendResultsModalOn, setIsMatchReqSendResultsModalOn] = useState(false)
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);
     const statesForGetToKnowUserModal = { _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
     const panResponder = PanResponder.create({
@@ -125,7 +126,7 @@ function Matching() {
         setWillShowQsModal(true)
     };
 
-    const swiperRef = useRef(null).current
+    const swiperRef = useRef(null)
     const handleOnSwipedLeft = () => swiperRef.swipeLeft()
     const handleOnSwipedTop = () => swiperRef.swipeTop()
     const handleOnSwipedRight = () => swiperRef.swipeRight()
@@ -177,12 +178,27 @@ function Matching() {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
     }
 
-    function handleMatchReqBtnTouch(event){
+    // GOAL: have the match request be sent as a message 
+    function handleMatchReqBtnTouch(){
+        // CASE: the user clicks on the heart button
+        // console.log('swiperRef: ', swiperRef.current.swipeRight())
+        swiperRef.current.swipeRight();
+        setIsMatchReqSendResultsModalOn(true);
 
+        // GOAL: have the following to occur:
+        // 1) have the swipe to occur
+        // 2) Make the results appear on the MatchReqResults modal
+
+        // potential states of the match request results:
+        // a) Match request sent successfully
+        // b) the match request was sent unsuccessfully 
+        // c) the state is loading
+        
+        
     }
 
-    function handleRejectBtnTouch(event){
-
+    function handleRejectBtnTouch(){
+        swiperRef.current.swipeLeft()
     }
 
     return (
@@ -197,7 +213,7 @@ function Matching() {
                     <View style={{ flex: 1, position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Swiper
-                                ref={swiperRef}
+                                ref={swiperRef}                                
                                 cards={potentialMatches}
                                 containerStyle={{ flex: 1, backgroundColor: 'transparent', borderWidth: 1, position: 'relative' }}
                                 renderCard={potentialMatch => (
