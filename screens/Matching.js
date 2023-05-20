@@ -7,11 +7,13 @@ import questions from '../testing-data/questions.json';
 import Swiper from 'react-native-deck-swiper'
 import User from '../components/Suitor/user/User';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faHeart, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
-import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, PURLPLE_BTN_COLOR } from '../global-styles/globalStyles';
+import { faHeart, faThumbsDown, faCancel } from '@fortawesome/free-solid-svg-icons'
+import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, GLOBAL_ELEMENT_SHADOW_STYLES, PURLPLE_BTN_COLOR } from '../global-styles/globalStyles';
 import { HEART_COLOR } from '../global-styles/globalStyles';
 import { PTxt } from '../components/customTxts';
 import FadeUp from '../components/Animations/FadeUp';
+import MatchReqBtn from '../components/Suitor/button/MatchReqBtn';
+import RejectBtn from '../components/Suitor/button/RejectBtn';
 
 const { height } = Dimensions.get('window');
 
@@ -175,7 +177,13 @@ function Matching() {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
     }
 
+    function handleMatchReqBtnTouch(event){
 
+    }
+
+    function handleRejectBtnTouch(event){
+
+    }
 
     return (
         <>
@@ -235,8 +243,10 @@ function Matching() {
                             />
                         </View>
                     </View>
-                    <View style={{ ...btns.container, position: 'absolute', bottom: 0, width: '100%', height: (height * .15), display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ ...btns.container, position: 'absolute', bottom: 15, width: '100%', height: (height * .15), display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
+                        <RejectBtn  handleOnPress={handleRejectBtnTouch} dynamicStyles={{ ...GLOBAL_ELEMENT_SHADOW_STYLES.main, backgroundColor: 'white' }} iconColor='#E8315B' icon={faCancel} />
                         <QuestionBtn handleOnPress={handleOnQBtnTouch} />
+                        <MatchReqBtn handleMatchReqBtnTouch={handleMatchReqBtnTouch} />
                     </View>
                 </SafeAreaView>
             </LinearGradient>
