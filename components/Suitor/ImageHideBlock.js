@@ -4,7 +4,7 @@ import { Animated, View } from 'react-native';
 function ImageHideBlock({ box }) {
     const fadeAnim = useRef(new Animated.Value(1)).current;
     const [wasFadedOut, setWasFadedOut] = useState(false)
-    const { id, top, left, willFadeOut } = box;
+    const { id, top, left, willFadeOut, willHide } = box;
 
     const fadeOutBlock = () => {
         Animated.timing(fadeAnim, {

@@ -14,6 +14,7 @@ import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, PURLPLE_BTN_COLOR } from
 import { HEART_COLOR } from '../global-styles/globalStyles';
 import { PTxt } from '../components/customTxts';
 import FadeUp from '../components/Animations/FadeUp';
+import Backdrop from '../components/CustomBackdrop';
 
 const { height } = Dimensions.get('window');
 
@@ -36,7 +37,7 @@ const { height } = Dimensions.get('window');
 const TESTING_USERS = [
     {
         id: 1,
-        imgPath: require('../assets/testImgs/test-img-1.jpg'),
+        imgPath: require('../assets/testImgs/test-img-2.jpg'),
         name: 'Emma',
         top: 0,
         willRevealPic: false,
@@ -51,7 +52,7 @@ const TESTING_USERS = [
     },
     {
         id: 2,
-        imgPath: require('../assets/testImgs/test-img-2.jpg'),
+        imgPath: require('../assets/testImgs/test-img-1.jpg'),
         name: 'Olivia',
         willRevealPic: false,
         top: 10,
@@ -87,11 +88,11 @@ function Matching() {
     const [boxes, setBoxes] = useState([]);
     const [position, setPosition] = useState(new Animated.ValueXY());
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
-    const [willShowQsModal, setWillShowQsModal] = useState(true);
+    const [willShowQsModal, setWillShowQsModal] = useState(false);
     const [userQuestions, setUserQuestions] = useState(questions);
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
-    const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(true);
+    const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);
     const statesForGetToKnowUserModal = { _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
     const panResponder = PanResponder.create({
         onStartShouldSetPanResponder: (event, gestureState) => true,

@@ -1,7 +1,37 @@
 import { useEffect, useState } from "react";
 import { Animated, PanResponder, StyleSheet, View, Image, Platform } from "react-native";
-import Swipe from "../../Animations/Swipe";
 import ImageHideBlock from "../ImageHideBlock";
+
+
+
+// all of the left boxes: [0, 5, 10, 15, 20]
+// bottom of the picture: [25, 26, 27, 28, 29]
+// right of the picture: [4, 9, 14, 19, 24] 
+// top of the picture: [0, 1, 2, 3, 4]
+
+// 1st inner right: [18, 23, 13]
+// 1st inner bottom: [21, 22, 23]
+// 1st left of the picture: [16, 11, 21] 
+// 1st top of the picture: [6,7,8]
+
+// last blocks to reveal: [22, 23]
+
+// const dataArray = [
+//     { boxIdsToFade: [0, 1, 2, 3, 4], wasFadedOut: false }, first outer row boxes
+//     { boxIdsToFade: [5, 10, 15, 20], wasFadedOut: false }, first
+//     { boxIdsToFade: [25, 26, 27, 28, 29], wasFadedOut: false },
+//     { boxIdsToFade: [4, 9, 14, 19, 24], wasFadedOut: false },
+//     { boxIdsToFade: [6, 7, 8], wasFadedOut: false },
+//     { boxIdsToFade: [16, 11, 21], wasFadedOut: false },
+//     { boxIdsToFade: [22, 23], wasFadedOut: false },
+//     { boxIdsToFade: [18, 13], wasFadedOut: false },
+//     { boxIdsToFade: [22, 23], wasFadedOut: false }
+//   ];
+
+
+const BOXES_NOT_TO_FADE_OUT = [16, 11, 21, 22, 23, 18, 13, 6, 7, 8, 25, 26, 27, 28, 29];
+
+
 
 function getRandomVals(arr, num) {
     const result = [];
@@ -46,10 +76,15 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
     };
 
 
+
+
     useEffect(() => {
         if (willRevealPic) {
-            const unfadedOutBoxes = boxes.filter(box => !box.willFadeOut);
-            const boxesToFadeOutIds = willRevealRestOfPic ? unfadedOutBoxes.map(({ id }) => id) : getRandomVals(unfadedOutBoxes, boxesToFadeOutInt).map(box => box.id);
+            const unfadedOutBoxes = boxes.filter(({ id }) => !BOXES_NOT_TO_FADE_OUT.includes(id)).filter(box => !box.willFadeOut);
+            const boxesToFadeOut = getRandomVals(unfadedOutBoxes, boxesToFadeOutInt)
+            console.log('boxesToFadeOut: ', boxesToFadeOut)
+            const boxesToFadeOutIds = willRevealRestOfPic ? unfadedOutBoxes.map(({ id }) => id) : boxesToFadeOut.map(box => box.id);
+
             setBoxes(boxes => boxes.map(box => {
                 if (boxesToFadeOutIds.includes(box.id)) {
                     return { ...box, willFadeOut: true }
@@ -57,6 +92,7 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
 
                 return box;
             }));
+
             setPotentialMatches(matches => matches.map(match => {
                 if (match.id === id) {
                     return { ...match, willRevealPic: false }
@@ -93,7 +129,6 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
                 });
             }
             const _boxesToFadeOutInt = getBoxesIntToFadeOut(totalBoxes, totalQuestionsInt);
-            console.log('_boxesToFadeOutInt: ', _boxesToFadeOutInt)
             setBoxesToFadeOutInt(_boxesToFadeOutInt)
             setWillGetBoxesNumToFadeOut(true);
             setBoxes(newBoxes);
@@ -106,10 +141,6 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
     //         setWillGetBoxesNumToFadeOut(false)
     //     };
     // }, [boxes])
-
-    useEffect(() => {
-        console.log('boxesToFadeOutInt: ', boxesToFadeOutInt)
-    })
 
     // get the height of modal when this comp is render
 
@@ -136,6 +167,7 @@ const styles = StyleSheet.create({
         flex: 8,
         position: "relative",
         padding: 20,
+        top: '-10%'
     },
     card: {
         shadowColor: '#000',

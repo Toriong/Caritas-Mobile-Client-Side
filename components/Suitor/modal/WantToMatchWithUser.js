@@ -23,17 +23,17 @@ function WantToMatchWithUserModal({ username = "Judy", _isModalOn }) {
     }
 
     return (
-        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal }} coverScreen={false}>
+        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal }} hasBackdrop backdropOpacity={.3} coverScreen={true}>
             <View>
                 <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>
                 </View>
                 <View style={{ flex: 1, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'row' }}>
-                    <TouchableOpacity onPress={handleThumbsDownBtnTouch} style={{ ...styles.thumbsDown, borderWidth: .5, borderColor: '#798188' }}>
+                    <TouchableOpacity onPress={handleThumbsDownBtnTouch} style={{ ...styles.thumbsDown, borderWidth: .5, borderColor: '#798188', width: "45%", height: 95 }}>
                         <PTxt>Pass.</PTxt>
                         <FontAwesomeIcon icon={faThumbsDown} style={{ marginTop: 10 }} size={PixelRatio.get() < 2 ? 20 : 25} color={EMOJI_SKIN_COLOR_DEFAULT} />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSendAReqBtnTouch} style={styles.heartBtn}>
+                    <TouchableOpacity onPress={handleSendAReqBtnTouch} style={{ ...styles.heartBtn, width: "45%", height: 95 }}>
                         <PTxt>Send a request!</PTxt>
                         <Animated.View style={{ transform: [{ scale: pulseAnim }], marginTop: 10 }}>
                             <FontAwesomeIcon icon={faHeart} size={PixelRatio.get() < 2 ? 20 : 25} color={HEART_COLOR} />
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         paddingLeft: 15,
         paddingRight: 15,
-        top: '10%',
+        top: '10%'
     },
     thumbsDown: {
         display: 'flex',
