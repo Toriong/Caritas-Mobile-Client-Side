@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faQuestion } from '@fortawesome/free-solid-svg-icons'
 import { PTxt } from "../../customTxts";
-import { PURLPLE_BTN_COLOR } from "../../../global-styles/globalStyles";
+import { PURLPLE_COLOR } from "../../../global-styles/globalStyles";
 import { TouchableOpacity, StyleSheet } from 'react-native';
 import Glow from '../../Animations/Glow';
 
@@ -21,7 +21,7 @@ function QuestionBtn({ handleOnPress }) {
 
 const styles = StyleSheet.create({
     btn: {
-        backgroundColor: PURLPLE_BTN_COLOR,
+        backgroundColor: PURLPLE_COLOR,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

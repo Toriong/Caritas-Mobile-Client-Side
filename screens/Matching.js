@@ -8,12 +8,13 @@ import Swiper from 'react-native-deck-swiper'
 import User from '../components/Suitor/user/User';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faHeart, faThumbsDown, faCancel } from '@fortawesome/free-solid-svg-icons'
-import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, GLOBAL_ELEMENT_SHADOW_STYLES, PURLPLE_BTN_COLOR } from '../global-styles/globalStyles';
+import { BTN_TXT_LIGHT_COLOR, EMOJI_SKIN_COLOR_DEFAULT, GLOBAL_ELEMENT_SHADOW_STYLES, PURLPLE_COLOR } from '../global-styles/globalStyles';
 import { HEART_COLOR } from '../global-styles/globalStyles';
 import { PTxt } from '../components/customTxts';
 import FadeUp from '../components/Animations/FadeUp';
 import MatchReqBtn from '../components/Suitor/button/MatchReqBtn';
 import RejectBtn from '../components/Suitor/button/RejectBtn';
+import MatchReqSendResult from '../components/Suitor/modal/MatchReqSendResult';
 
 const { height } = Dimensions.get('window');
 
@@ -67,34 +68,20 @@ const TESTING_USERS = [
 
 
 function Matching() {
-    const [potentialMatches, setPotentialMatches] = useState(TESTING_USERS)
+    const [potentialMatches, setPotentialMatches] = useState(TESTING_USERS.map(user => ({ ...user, questions: questions.slice(0, 5) })))
+    const [potentialMatchesCurrentIndex, setPotentialMatchesCurrentIndex] = useState(0)
+    const [userQuestions, setUserQuestions] = useState(potentialMatches[0].questions);
     const [boxes, setBoxes] = useState([]);
-    const [position, setPosition] = useState(new Animated.ValueXY());
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
     const [willShowQsModal, setWillShowQsModal] = useState(false);
-    const [userQuestions, setUserQuestions] = useState(questions.slice(0, 5));
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
-    const [isMatchReqSendResultsModalOn, setIsMatchReqSendResultsModalOn] = useState(false)
+    const [isMatchReqSendResultsModalOn, setIsMatchReqSendResultsModalOn] = useState(false);
+    const [isMatchReqResultsModalOn, setIsMatchReqResultsModalOn] = useState(false);
+    const [matchReqResultsTxt, setMatchReqResultsTxt] = useState("Sending match request...")
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);
-    const statesForGetToKnowUserModal = { _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
-    const panResponder = PanResponder.create({
-        onStartShouldSetPanResponder: (event, gestureState) => true,
-        onPanResponderMove: (event, gestureState) => {
-            setPosition({ x: gestureState.dx, y: gestureState.dy })
-        },
-        onPanResponderRelease: (event, gestureState) => {
-        }
-    });
-
-    function resetModalState() {
-        setWillShowQsModal(false)
-    };
-
-    function handleLayout(event) {
-        const { width, height } = event.nativeEvent.layout;
-        setViewDimensions({ width, height });
-    };
+    const [isNewUserQuestions, setIsNewUserQuestions] = useState(false);
+    const statesForGetToKnowUserModal = { _isNewUserQuestions: [isNewUserQuestions, setIsNewUserQuestions], _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
 
     function likeAnswer(questionId) {
         setUserQuestions(userQuestions => userQuestions.map(question => {
@@ -113,7 +100,7 @@ function Matching() {
             return { ...question, isCurrent: false };
         }))
         setPotentialMatches(potentialMatches => potentialMatches.map(user => {
-            if (user.id === potentialMatches[0].id) {
+            if (user.id === potentialMatches[potentialMatchesCurrentIndex].id) {
                 return { ...user, willRevealPic: true }
             }
 
@@ -126,10 +113,30 @@ function Matching() {
         setWillShowQsModal(true)
     };
 
+
     const swiperRef = useRef(null)
     const handleOnSwipedLeft = () => swiperRef.swipeLeft()
     const handleOnSwipedTop = () => swiperRef.swipeTop()
-    const handleOnSwipedRight = () => swiperRef.swipeRight()
+
+    function handleOnSwipedRight() {
+        // console.log('swiped right: ', swiperRef.current.)
+    }
+
+    
+
+    function handleOnSwiped() {
+        const _potentialMatchesCurrentIndex = potentialMatchesCurrentIndex + 1
+        
+        if(potentialMatches[_potentialMatchesCurrentIndex]){
+            setIsNewUserQuestions(true);
+            setUserQuestions(potentialMatches[_potentialMatchesCurrentIndex].questions)
+            setPotentialMatchesCurrentIndex(_potentialMatchesCurrentIndex);
+            return;
+        }
+        console.log("will get more users to view: ")
+        // CASE: THE USER HAS REACHED THE END OF THE POTENTIAL MATCHES:
+        // GET THE NEXT BATCH OF MATCHES FOR THE USER TO VIEW
+    }
 
     useEffect(() => {
         const { width, height } = viewDimensions;
@@ -178,28 +185,47 @@ function Matching() {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
     }
 
-    // GOAL: have the match request be sent as a message 
-    function handleMatchReqBtnTouch(){
-        // CASE: the user clicks on the heart button
-        // console.log('swiperRef: ', swiperRef.current.swipeRight())
-        swiperRef.current.swipeRight();
-        setIsMatchReqSendResultsModalOn(true);
 
-        // GOAL: have the following to occur:
-        // 1) have the swipe to occur
-        // 2) Make the results appear on the MatchReqResults modal
+    function sendMatchRequest() {
 
-        // potential states of the match request results:
-        // a) Match request sent successfully
-        // b) the match request was sent unsuccessfully 
-        // c) the state is loading
-        
-        
+        // GOAL: replace this with the agora logic
+        setTimeout(() => {
+            const _wasReqSentSuccessfully = true
+            let txt = _wasReqSentSuccessfully ? 'Match request was sent' : 'FAIL TO SEND MATCH REQUEST 😔.';
+            setMatchReqResultsTxt(txt)
+            _wasReqSentSuccessfully && setPotentialMatches(potentialMatches => potentialMatches.map((match, index) => {
+                if (index === potentialMatchesCurrentIndex) {
+                    return { ...match, wasMatchReqSent: true }
+                }
+
+                return match;
+            }))
+        }, 600)
     }
 
-    function handleRejectBtnTouch(){
+    function handleMatchReqBtnTouch() {
+        setIsMatchReqResultsModalOn(true);
+        ('FAIL TO SEND MATCH REQUEST 😔.' === matchReqResultsTxt) ? setWillTryToSendMatchReqAgain(true) : sendMatchRequest();
+    }
+
+    function handleRejectBtnTouch() {
         swiperRef.current.swipeLeft()
     }
+
+    const [willTryToSendMatchReqAgain, setWillTryToSendMatchReqAgain] = useState(false);
+    const statesForMatchReqSendResultModal = { _willTryToSendMatchReqAgain: [willTryToSendMatchReqAgain, setWillTryToSendMatchReqAgain], _isModalVisible: [isMatchReqResultsModalOn, setIsMatchReqResultsModalOn] }
+
+    useEffect(() => {
+        if (willTryToSendMatchReqAgain) {
+            setMatchReqResultsTxt("Sending match request...")
+
+            // GOAL: use the agora logic to send the match request to the target user.
+            sendMatchRequest()
+
+
+            setWillTryToSendMatchReqAgain(false)
+        }
+    }, [willTryToSendMatchReqAgain])
 
     return (
         <>
@@ -213,17 +239,19 @@ function Matching() {
                     <View style={{ flex: 1, position: 'relative', width: '100%', height: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                         <View style={{ position: 'relative', width: '100%', height: '100%' }}>
                             <Swiper
-                                ref={swiperRef}                                
+                                ref={swiperRef}
                                 cards={potentialMatches}
-                                containerStyle={{ flex: 1, backgroundColor: 'transparent', borderWidth: 1, position: 'relative' }}
+                                showSecondCard
+                                containerStyle={{ flex: 1, backgroundColor: 'transparent', position: 'relative' }}
                                 renderCard={potentialMatch => (
-                                    <FadeUp delayMs={100} dynamicStyles={{ height: height * .8 }}>
+                                    <FadeUp key={potentialMatch.id} delayMs={100} dynamicStyles={{ height: height * .8 }}>
                                         <User potentialMatches={potentialMatches} willRevealRestOfPic={willRevealRestOfPic} totalQuestionsInt={userQuestions.length} handleOnLayout={handleOnLayoutUserModal} user={potentialMatch} setPotentialMatches={setPotentialMatches} />
                                     </FadeUp>
                                 )}
 
                                 // onSwipedLeft={handleOnSwipedLeft}
-                                // onSwipedRight={handleOnSwipedRight}
+                                onSwiped={handleOnSwiped}
+                                onSwipedRight={handleOnSwipedRight}
                                 disableBottomSwipe
                                 disableTopSwipe
                                 animateCardOpacity
@@ -245,7 +273,7 @@ function Matching() {
                                     right: {
                                         element: (
                                             <View style={{ display: 'flex', justifyContent: 'flex-end', height: "10%" }}>
-                                                <View style={{ borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', borderColor: PURLPLE_BTN_COLOR, backgroundColor: PURLPLE_BTN_COLOR, justifyContent: 'center', alignItems: 'center' }}>
+                                                <View style={{ borderWidth: 1, height: 50, width: 125, borderRadius: 15, display: 'flex', borderColor: PURLPLE_COLOR, backgroundColor: PURLPLE_COLOR, justifyContent: 'center', alignItems: 'center' }}>
                                                     <PTxt style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
                                                         LIKE
                                                         <FontAwesomeIcon icon={faHeart} color={HEART_COLOR} style={{ transform: [{ translateY: 2 }, { translateX: 2 }] }} />
@@ -260,13 +288,14 @@ function Matching() {
                         </View>
                     </View>
                     <View style={{ ...btns.container, position: 'absolute', bottom: 15, width: '100%', height: (height * .15), display: 'flex', justifyContent: 'space-evenly', flexDirection: 'row', alignItems: 'center' }}>
-                        <RejectBtn  handleOnPress={handleRejectBtnTouch} dynamicStyles={{ ...GLOBAL_ELEMENT_SHADOW_STYLES.main, backgroundColor: 'white' }} iconColor='#E8315B' icon={faCancel} />
+                        <RejectBtn handleOnPress={handleRejectBtnTouch} dynamicStyles={{ ...GLOBAL_ELEMENT_SHADOW_STYLES.main, backgroundColor: 'white' }} iconColor='#E8315B' icon={faCancel} />
                         <QuestionBtn handleOnPress={handleOnQBtnTouch} />
                         <MatchReqBtn handleMatchReqBtnTouch={handleMatchReqBtnTouch} />
                     </View>
                 </SafeAreaView>
             </LinearGradient>
             <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic }} />
+            <MatchReqSendResult states={statesForMatchReqSendResultModal} modalStateTxt={matchReqResultsTxt} username="Judy" fns={{ swipeRight: swiperRef?.current?.swipeRight }} />
         </>
     )
 }
@@ -294,8 +323,8 @@ const styles = StyleSheet.create({
         height: 50
     },
     likeTxt: {
-        backgroundColor: PURLPLE_BTN_COLOR,
-        borderColor: PURLPLE_BTN_COLOR,
+        backgroundColor: PURLPLE_COLOR,
+        borderColor: PURLPLE_COLOR,
         color: HEART_COLOR,
         borderRadius: 50,
         width: 200,

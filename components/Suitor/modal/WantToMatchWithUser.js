@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
 import { faHeart, faThumbsDown } from '@fortawesome/free-solid-svg-icons'
 import Modal from "react-native-modal";
 import { HeadingTxt, PTxt } from '../../customTxts';
-import { EMOJI_SKIN_COLOR_DEFAULT, HEART_COLOR, PURLPLE_BTN_COLOR } from '../../../global-styles/globalStyles';
+import { EMOJI_SKIN_COLOR_DEFAULT, HEART_COLOR, PURLPLE_COLOR } from '../../../global-styles/globalStyles';
 import usePulseAnimate from '../../../custom-hooks/usePulseAnimate';
 
 function WantToMatchWithUserModal({ username = "Judy", _isModalOn }) {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
     },
     heartBtn: {
-        backgroundColor: PURLPLE_BTN_COLOR,
+        backgroundColor: PURLPLE_COLOR,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

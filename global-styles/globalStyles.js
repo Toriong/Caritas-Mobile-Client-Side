@@ -1,12 +1,12 @@
 import { StyleSheet } from 'react-native';
 
-export const FONT_FAMILY_MAIN = 'Sans-Serif'; 
+export const FONT_FAMILY_MAIN = 'sans-serif'; 
 
 export const BTN_TXT_LIGHT_COLOR = '#F76057'
 
 export const HEART_COLOR = '#FF00BF'
 
-export const PURLPLE_BTN_COLOR = '#A1B0FD'
+export const PURLPLE_COLOR = '#A1B0FD'
 
 export const BLUE_PRIMARY_COLOR = '#3B9AFF'
 

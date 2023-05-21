@@ -2,7 +2,7 @@ import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { Animated, PixelRatio, StyleSheet, TouchableOpacity } from "react-native";
 import usePulseAnimate from "../../../custom-hooks/usePulseAnimate";
-import { HEART_COLOR, PURLPLE_BTN_COLOR } from "../../../global-styles/globalStyles";
+import { HEART_COLOR } from "../../../global-styles/globalStyles";
 import { PTxt } from "../../customTxts";
 
 
@@ -19,11 +19,7 @@ function MatchReqBtn({ handleMatchReqBtnTouch, isTxtDisplayed, dynamicStyles = {
             borderRadius: 10,
             margin: 10,
             width: 50,
-            height: 50,
-            // paddingLeft: 15,
-            // paddingRight: 15,
-            // paddingTop: 10,
-            // paddingBottom: 10,
+            height: 50
         }
     })
 

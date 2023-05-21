@@ -11,8 +11,6 @@ import Glow from '../../Animations/Glow';
 import { getAnimSequenceArr } from '../../../helperFns/components';
 import FadeInView from '../../Animations/FadeIn';
 import WantToMatchWithUserModal from './WantToMatchWithUser';
-// import customBackdrop component
-import CustomBackdrop from '../../../components/CustomBackdrop';
 
 
 const USER_INTERACTION_ICON_SIZE = 25;
@@ -26,10 +24,12 @@ function getQuestionToDisplayAndItsIndex(questions, questionId, numToAddToIndex 
 }
 
 
-function GetToKnowUserModal({ states, fns }) {
-    const { _isModalOn, _qIdOfLikedAns, _questions, _isWantToMatchWithUserModalOn } = states;
+function GetToKnowUserModal({ states, fns, }) {
+    const { _isModalOn, _qIdOfLikedAns, _questions, _isWantToMatchWithUserModalOn, _isNewUserQuestions } = states;
     const { setWillRevealRestOfPic } = fns;
     const [isModalOn, setIsModalOn] = _isModalOn;
+    const [isNewUserQuestions, setIsNewUserQuestions] = _isNewUserQuestions;
+    const [, setIsWantToMatchWithUserModalOn] = _isWantToMatchWithUserModalOn
     const [, setQIdOfLikedAns] = _qIdOfLikedAns;
     const [questions, setQuestions] = _questions;
     const [willFadeOutShowAnswerBtn, setWillFadeOutShowAnswerBtn] = useState(false);
@@ -57,6 +57,7 @@ function GetToKnowUserModal({ states, fns }) {
     const [willShowArrowDown, setWillShowArrowDown] = useState(false);
     const [willFadeInArrowDown, setWillFadeInArrowDown] = useState(true);
     const [willFadeOutArrowDown, setWillFadeOutArrowDown] = useState(false);
+    const [wasIsWantToMatchWithUserModalOn, setWasIsWantToMatchWithUserModalOn] = useState(false);
     const [showAnsBtnDisplayVal, setShowAnsBtnDisplayVal] = useState('flex')
     const _willFadeInMehIconBtn = [willFadeInMehIconBtn, setWillFadeInMehIconBtn];
     const _willFadeInThumbsDownBtn = [willFadeInThumbsDownBtn, setWillFadeInThumbsDownBtn];
@@ -64,6 +65,32 @@ function GetToKnowUserModal({ states, fns }) {
     const _willFadeInAnswersUI = [willFadeInAnswersUI, setWillFadeInAnswersUI];
     const _willFadeShowAnswerBtnIn = [willFadeShowAnswerBtnIn, setWillFadeShowAnswerBtnIn]
     const animSeqenceArr = getAnimSequenceArr();
+
+    function resetAllStates(willShowAnsBtn, isNewSetOfUserQs) {
+        setWillShowLoadingScreen(false);
+        setWillFadeInLoadingScreen(true);
+        setWillFadeOutShowAnswerBtn(false)
+        setWillFadeOutThumbsDownBtn(false);
+        setWillFadeShowAnswerBtnIn(false);
+        setWillShowArrowDown(false);
+        setWillFadeInArrowDown(true)
+        setWillFadeOutArrowDown(false);
+        setWillShowAnswer(false);
+        setWillFadeInAnswersUI(false);
+        willShowAnsBtn && setShowAnsBtnDisplayVal('flex');
+        setWillShowAnswer(false);
+        setIsWantToMatchWithUserModalOn(false);
+        setWasIsWantToMatchWithUserModalOn(false);
+
+        isNewSetOfUserQs ? setQuestions(questions => questions.map((question, index) => (index === 0) ? ({ ...question, isCurrent: true }) : ({ ...question, isCurrent: false }))) : setQuestions(questions => questions.map(question => (question.id === id) ? { ...question, isCurrent: true } : { ...question, isCurrent: false }));
+    }
+
+    useEffect(() => {
+        if (isNewUserQuestions) {
+            resetAllStates(true, true)
+            setIsNewUserQuestions(false)
+        }
+    }, [isNewUserQuestions])
 
 
 
@@ -282,14 +309,13 @@ function GetToKnowUserModal({ states, fns }) {
     const isOnFirstQ = (questions[0].id === id);
     const currentQPosNum = questions.findIndex(({ id: questionId }) => questionId === id) + 1;
 
-    const [wasIsWantToMatchWithUserModalOn, setWasIsWantToMatchWithuserModalOn] = useState(false);
 
     useEffect(() => {
         if (isOnLastQ && (isLiked || isDisliked || isNeutral) && !wasIsWantToMatchWithUserModalOn && isModalOn) {
             setTimeout(() => {
-                _isWantToMatchWithUserModalOn[1](true);
+                setIsWantToMatchWithUserModalOn(true);
             }, 500)
-            setWasIsWantToMatchWithuserModalOn(true);
+            setWasIsWantToMatchWithUserModalOn(true);
         }
     }, [questions, isModalOn])
 

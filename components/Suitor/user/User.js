@@ -1,6 +1,12 @@
 import { useEffect, useState } from "react";
 import { Animated, PanResponder, StyleSheet, View, Image, Platform } from "react-native";
 import ImageHideBlock from "../ImageHideBlock";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
+import { GLOBAL_ELEMENT_SHADOW_STYLES, HEART_COLOR, PURLPLE_COLOR } from "../../../global-styles/globalStyles";
+import { PTxt } from "../../customTxts";
+import Pulse from "../../Animations/Pulse";
+import FadeInView from "../../Animations/FadeIn";
 
 
 
@@ -53,8 +59,8 @@ function getBoxesIntToFadeOut(totalBoxesInt, totalQuestionsInt) {
 }
 
 
-function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, willRevealRestOfPic }) {
-    const { imgPath, top: cssTopNum, willRevealPic, id } = user;
+function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wasReqSentSuccessfully }) {
+    const { imgPath, top: cssTopNum, willRevealPic, id, wasMatchReqSent } = user;
     const [viewDimensions, setViewDimensions] = useState({ width: 0, height: 0 });
     const [boxes, setBoxes] = useState([]);
     const [boxesToFadeOutInt, setBoxesToFadeOutInt] = useState(10)
@@ -157,13 +163,35 @@ function User({ user, setPotentialMatches, totalQuestionsInt, handleOnLayout, wi
     //     };
     // }, [boxes])
 
+    const [isMatchReqSentTxtDisplayed, setIsMatchReqSentTxtDisplayed] = useState(false);
+
+    useEffect(() => {
+        if (wasMatchReqSent) {
+            setIsMatchReqSentTxtDisplayed(true)
+        }
+    }, [wasMatchReqSent])
+
     // get the height of modal when this comp is render
 
     return (
         <View style={styles.container} onLayout={handleOnLayout}>
-            <View style={{ ...styles.card, height: '100%', flex: .95, borderRadius: 10, top: cssTopNum, overflow: 'hidden', }}>
+            {isMatchReqSentTxtDisplayed &&
+                <View style={{ width: '100%', position: 'absolute', zIndex: 1 }}>
+                    <FadeInView durationMs={300}>
+                        <View style={{ ...GLOBAL_ELEMENT_SHADOW_STYLES.main, borderWidth: 1, padding: 10, width: 155, borderRadius: 15, display: 'flex', flexDirection: 'column', borderColor: PURLPLE_COLOR, backgroundColor: PURLPLE_COLOR, justifyContent: 'center', alignItems: 'center' }}>
+                            <PTxt style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
+                                Request sent!
+                            </PTxt>
+                            <Pulse>
+                                <FontAwesomeIcon icon={faHeart} color={HEART_COLOR} size={20} style={{ transform: [{ translateY: 2 }] }} />
+                            </Pulse>
+                        </View>
+                    </FadeInView>
+                </View>
+            }
+            <View style={{ ...styles.card, height: '100%', flex: .95, borderRadius: 10, top: cssTopNum, overflow: 'hidden', position: 'relative' }}>
                 <View style={{ position: 'relative', flex: .7, borderTopEndRadius: 10, borderTopStartRadius: 10, height: '100%', overflow: 'hidden' }} onLayout={handleLayout}>
-                    <Image style={{ ...styles.image }} source={imgPath} />
+                    <Image style={{ ...styles.image, }} source={imgPath} />
                     <View style={{ borderWidth: 2, borderBottomColor: '#dee2e6', position: 'absolute' }} />
                     {boxes.map(box => <ImageHideBlock key={box.id} box={box} />)}
                 </View>
@@ -180,8 +208,8 @@ const styles = StyleSheet.create({
     container: {
         ...maxParentDimensions,
         flex: 8,
+        padding: 15,
         position: "relative",
-        padding: 20,
         top: '-10%'
     },
     card: {
@@ -197,6 +225,7 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+        // resizeMode: 'contain',
         aspectRatio: 1,
         position: 'absolute',
         borderTopLeftRadius: 10,
