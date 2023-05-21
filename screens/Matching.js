@@ -18,7 +18,6 @@ import MatchReqSendResult from '../components/Suitor/modal/MatchReqSendResult';
 import { trackUserRejection } from '../helperFns/global';
 
 const { height } = Dimensions.get('window');
-const IS_TESTING_SWIPE_LEFT_FAIL = true;
 
 const TESTING_USERS = [
     {
@@ -78,11 +77,15 @@ function Matching() {
     const [willShowQsModal, setWillShowQsModal] = useState(false);
     const [qIdOfLikedAns, setQIdOfLikedAns] = useState(false);
     const [willRevealRestOfPic, setWillRevealRestOfPic] = useState(false);
-    const [isMatchReqSendResultsModalOn, setIsMatchReqSendResultsModalOn] = useState(false);
     const [isMatchReqResultsModalOn, setIsMatchReqResultsModalOn] = useState(false);
     const [matchReqResultsTxt, setMatchReqResultsTxt] = useState("Sending match request...")
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = useState(false);
     const [isNewUserQuestions, setIsNewUserQuestions] = useState(false);
+
+    // useEffect(() => {
+    //     setIsMatchReqResultsModalOn(true)
+    // }, [])
+
     const statesForGetToKnowUserModal = { _isNewUserQuestions: [isNewUserQuestions, setIsNewUserQuestions], _isWantToMatchWithUserModalOn: [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn], _qIdOfLikedAns: [qIdOfLikedAns, setQIdOfLikedAns], _isModalOn: [willShowQsModal, setWillShowQsModal], _questions: [userQuestions, setUserQuestions], setPotentialMatches }
 
     function likeAnswer(questionId) {
@@ -136,11 +139,12 @@ function Matching() {
     }
 
     function handleOnSwipedRight() {
-        // GOAL: send the request to the server to save the user's request to match with the target user.
     }
 
+    const [didUserRejectionFailed, setDidUserRejectionFailed] = useState(false);
+
     function handleOnSwipeLeft() {
-        trackUserRejection()
+        trackUserRejection([didUserRejectionFailed, setDidUserRejectionFailed])
     }
 
 
@@ -295,7 +299,7 @@ function Matching() {
                 </SafeAreaView>
             </LinearGradient>
             <GetToKnowUserModal swiperRef={swiperRef} states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic, sendRequestToMatchWithUser: handleMatchReqBtnTouch }} />
-            <MatchReqSendResult states={statesForMatchReqSendResultModal} modalStateTxt={matchReqResultsTxt} username="Judy" fns={{ swipeRight: swiperRef?.current?.swipeRight }} />
+            <MatchReqSendResult states={statesForMatchReqSendResultModal} modalStateTxt={matchReqResultsTxt} username="Judy" fns={{ swipeRight: swiperRef?.current?.swipeRight, setMatchReqResultsTxt }} />
         </>
     )
 }

@@ -354,7 +354,7 @@ function GetToKnowUserModal({ states, fns, swiperRef }) {
 
     return (
         <>
-            <Modal onModalShow={handleOnModalShow} onModalHide={handleClosingModal} isVisible={isModalOn} useNativeDriver animationOut="slideOutDown" onBackdropPress={handleClosingModal} hasBackdrop style={{ ...style.main }}>
+            <Modal animationInTiming={700} animationOutTiming={700} onModalShow={handleOnModalShow} onModalHide={handleClosingModal} isVisible={isModalOn} useNativeDriver animationOut="slideOutDown" onBackdropPress={handleClosingModal} hasBackdrop style={{ ...style.main }}>
                 <View style={{ width: '100%', height: '100%', zIndex: -1 }}>
                     <View style={{ backgroundColor: 'white', borderRadius: 10, height: "99%", width: "100%" }}>
                         <View style={{ width: "100%", flex: .3, display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', alignContent: 'center' }}>

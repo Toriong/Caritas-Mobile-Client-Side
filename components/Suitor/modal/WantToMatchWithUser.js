@@ -14,31 +14,29 @@ function WantToMatchWithUserModal({ username = "Judy", _isWantToMatchWithUserMod
         setIsWantToMatchWithUserModalOn(false)
     }
 
+    function closeModalAfterDelayMs(delayMsInt = 300) {
+        setIsWantToMatchWithUserModalOn(false)
+        setTimeout(() => {
+            setIsGetToKnowUserModalOn(false)
+        }, delayMsInt);
+    }
+
     function handleThumbsDownBtnTouch() {
         setTimeout(() => {
             swiperRef.current.swipeLeft()
-        }, 500)
-        setIsWantToMatchWithUserModalOn(false)
-        setTimeout(() => {
-            setIsGetToKnowUserModalOn(false)
-        }, 300);
+        }, 1000)
+        closeModalAfterDelayMs()
     }
 
     function handleSendAReqBtnTouch() {
-        setIsWantToMatchWithUserModalOn(false)
-        setTimeout(() => {
-            setIsGetToKnowUserModalOn(false)
-        }, 300);
+        closeModalAfterDelayMs(200)
         setTimeout(() => {
             sendRequestToMatchWithUser()
         }, 1000)
-        // GOAL: when the user wants to match with the target user by pressing this button have the following to occur:
-        // close the modal
-        // after half a second, 
     }
 
     return (
-        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isWantToMatchWithUserModalOn} style={{ ...styles.modal }} hasBackdrop backdropOpacity={.3} coverScreen={true}>
+        <Modal animationOutTiming={700} animationInTiming={700} onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isWantToMatchWithUserModalOn} style={{ ...styles.modal }} hasBackdrop backdropOpacity={.3} coverScreen={true}>
             <View>
                 <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>
