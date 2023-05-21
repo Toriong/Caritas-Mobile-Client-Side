@@ -6,24 +6,30 @@ import { HeadingTxt, PTxt } from '../../customTxts';
 import { EMOJI_SKIN_COLOR_DEFAULT, HEART_COLOR, PURLPLE_COLOR } from '../../../global-styles/globalStyles';
 import usePulseAnimate from '../../../custom-hooks/usePulseAnimate';
 
-function WantToMatchWithUserModal({ username = "Judy", _isModalOn }) {
-    const [isModalOn, setIsModalOn] = _isModalOn;
+function WantToMatchWithUserModal({ username = "Judy", _isWantToMatchWithUserModalOn, setIsGetToKnowUserModalOn, swiperRef }) {
+    const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = _isWantToMatchWithUserModalOn;
     const pulseAnim = usePulseAnimate()
 
     function handleModalClose() {
-        setIsModalOn(false)
+        setIsWantToMatchWithUserModalOn(false)
     }
 
     function handleThumbsDownBtnTouch() {
-        setIsModalOn(false)
+        setTimeout(() => {
+            swiperRef.current.swipeLeft()
+        }, 300)
+        setIsGetToKnowUserModalOn(false)
     }
 
     function handleSendAReqBtnTouch() {
-        setIsModalOn(false)
+        setTimeout(() => {
+            swiperRef.current.swipeRight()
+        }, 300)
+        setIsGetToKnowUserModalOn(false)
     }
 
     return (
-        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isModalOn} style={{ ...styles.modal }} hasBackdrop backdropOpacity={.3} coverScreen={true}>
+        <Modal onModalHide={handleModalClose} onBackdropPress={handleModalClose} isVisible={isWantToMatchWithUserModalOn} style={{ ...styles.modal }} hasBackdrop backdropOpacity={.3} coverScreen={true}>
             <View>
                 <View style={{ flex: 1.5, width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                     <HeadingTxt style={{ textAlign: 'center' }}>You have reached the end of {username}'s questions. Do you want to send a match request and view {username}'s picture?</HeadingTxt>

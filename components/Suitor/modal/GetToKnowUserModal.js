@@ -24,7 +24,7 @@ function getQuestionToDisplayAndItsIndex(questions, questionId, numToAddToIndex 
 }
 
 
-function GetToKnowUserModal({ states, fns, }) {
+function GetToKnowUserModal({ states, fns, swiperRef }) {
     const { _isModalOn, _qIdOfLikedAns, _questions, _isWantToMatchWithUserModalOn, _isNewUserQuestions } = states;
     const { setWillRevealRestOfPic } = fns;
     const [isModalOn, setIsModalOn] = _isModalOn;
@@ -450,7 +450,7 @@ function GetToKnowUserModal({ states, fns, }) {
                             </View>
                         </View>
                     </View>
-                    <WantToMatchWithUserModal _isModalOn={_isWantToMatchWithUserModalOn} />
+                    <WantToMatchWithUserModal swiperRef={swiperRef} _isWantToMatchWithUserModalOn={_isWantToMatchWithUserModalOn} setIsGetToKnowUserModalOn={setIsModalOn} />
                 </View>
             </Modal>
         </>

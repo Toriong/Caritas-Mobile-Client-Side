@@ -15,6 +15,7 @@ import FadeUp from '../components/Animations/FadeUp';
 import MatchReqBtn from '../components/Suitor/button/MatchReqBtn';
 import RejectBtn from '../components/Suitor/button/RejectBtn';
 import MatchReqSendResult from '../components/Suitor/modal/MatchReqSendResult';
+import { trackUserRejection } from '../helperFns/global';
 
 const { height } = Dimensions.get('window');
 const IS_TESTING_SWIPE_LEFT_FAIL = true;
@@ -119,25 +120,23 @@ function Matching() {
     const handleOnSwipedLeft = () => swiperRef.swipeLeft()
     const handleOnSwipedTop = () => swiperRef.swipeTop()
 
-    function handleOnSwipedRight() {
-        // console.log('swiped right: ', swiperRef.current.)
+    function sendMatchRequest() {
+        setTimeout(() => {
+            const _wasReqSentSuccessfully = true
+            let txt = _wasReqSentSuccessfully ? 'Match request was sent' : 'FAIL TO SEND MATCH REQUEST 😔.';
+            setMatchReqResultsTxt(txt)
+            _wasReqSentSuccessfully && setPotentialMatches(potentialMatches => potentialMatches.map((match, index) => {
+                if (index === potentialMatchesCurrentIndex) {
+                    return { ...match, wasMatchReqSent: true }
+                }
+
+                return match;
+            }))
+        }, 600)
     }
 
-    // GOAL: 
-    // the function below will be executed when the user swipes left 
-    // presses the reject user button 
-    // presses the reject user button in the modal that appears at the end of the questions modal
-    // make the function global (a helper function)
-
-    function trackUserRejection() {
-        // SEND THE POST REQUEST HERE TO TRACK THE USER'S REJECTION
-
-        if (IS_TESTING_SWIPE_LEFT_FAIL) {
-            const alertTouchOpts = [{ text: 'Try again.', onPress: trackUserRejection }, { text: 'Continue matching.' }]
-            setTimeout(() => {
-                Alert.alert("Failed to track rejection of user.", "Would you like to continue or try again?", alertTouchOpts)
-            }, 1000);
-        }
+    function handleOnSwipedRight() {
+        // GOAL: send the request to the server to save the user's request to match with the target user.
     }
 
     function handleOnSwipeLeft() {
@@ -184,8 +183,6 @@ function Matching() {
         }
     }, [viewDimensions]);
 
-
-
     useEffect(() => {
         if (qIdOfLikedAns) {
             setTimeout(() => {
@@ -202,24 +199,6 @@ function Matching() {
 
     function handleOnLayoutUserModal(event) {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
-    }
-
-
-    function sendMatchRequest() {
-
-        // GOAL: replace this with the agora logic
-        setTimeout(() => {
-            const _wasReqSentSuccessfully = true
-            let txt = _wasReqSentSuccessfully ? 'Match request was sent' : 'FAIL TO SEND MATCH REQUEST 😔.';
-            setMatchReqResultsTxt(txt)
-            _wasReqSentSuccessfully && setPotentialMatches(potentialMatches => potentialMatches.map((match, index) => {
-                if (index === potentialMatchesCurrentIndex) {
-                    return { ...match, wasMatchReqSent: true }
-                }
-
-                return match;
-            }))
-        }, 600)
     }
 
     function handleMatchReqBtnTouch() {
@@ -245,6 +224,8 @@ function Matching() {
             setWillTryToSendMatchReqAgain(false)
         }
     }, [willTryToSendMatchReqAgain])
+
+    
 
     return (
         <>
@@ -314,7 +295,7 @@ function Matching() {
                     </View>
                 </SafeAreaView>
             </LinearGradient>
-            <GetToKnowUserModal states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic }} />
+            <GetToKnowUserModal swiperRef={swiperRef} states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic }} />
             <MatchReqSendResult states={statesForMatchReqSendResultModal} modalStateTxt={matchReqResultsTxt} username="Judy" fns={{ swipeRight: swiperRef?.current?.swipeRight }} />
         </>
     )
