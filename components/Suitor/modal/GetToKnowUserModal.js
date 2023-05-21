@@ -26,7 +26,7 @@ function getQuestionToDisplayAndItsIndex(questions, questionId, numToAddToIndex 
 
 function GetToKnowUserModal({ states, fns, swiperRef }) {
     const { _isModalOn, _qIdOfLikedAns, _questions, _isWantToMatchWithUserModalOn, _isNewUserQuestions } = states;
-    const { setWillRevealRestOfPic } = fns;
+    const { setWillRevealRestOfPic, sendRequestToMatchWithUser } = fns;
     const [isModalOn, setIsModalOn] = _isModalOn;
     const [isNewUserQuestions, setIsNewUserQuestions] = _isNewUserQuestions;
     const [, setIsWantToMatchWithUserModalOn] = _isWantToMatchWithUserModalOn
@@ -40,7 +40,6 @@ function GetToKnowUserModal({ states, fns, swiperRef }) {
     const [isHeartClicked, setIsHeartClicked] = useState(false);
     const [willFadeOutAnsUI, setWillFadeOutAnsUI] = useState(false)
     const [isNextBtnDisabled, setIsNextBtnDisabled] = useState(false);
-    const [isAnswerTxtLayoutScrollable, setIsAnswerTxtLayoutScrollable] = useState(true);
     const [isBackBtnDisabled, setIsBackBtnDisabled] = useState(false);
     const [willFadeShowAnswerBtnIn, setWillFadeShowAnswerBtnIn] = useState(true);
     const [willFadeInLoadingScreen, setWillFadeInLoadingScreen] = useState(true)
@@ -450,7 +449,7 @@ function GetToKnowUserModal({ states, fns, swiperRef }) {
                             </View>
                         </View>
                     </View>
-                    <WantToMatchWithUserModal swiperRef={swiperRef} _isWantToMatchWithUserModalOn={_isWantToMatchWithUserModalOn} setIsGetToKnowUserModalOn={setIsModalOn} />
+                    <WantToMatchWithUserModal sendRequestToMatchWithUser={sendRequestToMatchWithUser} swiperRef={swiperRef} _isWantToMatchWithUserModalOn={_isWantToMatchWithUserModalOn} setIsGetToKnowUserModalOn={setIsModalOn} />
                 </View>
             </Modal>
         </>

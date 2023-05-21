@@ -6,7 +6,7 @@ import { HeadingTxt, PTxt } from '../../customTxts';
 import { EMOJI_SKIN_COLOR_DEFAULT, HEART_COLOR, PURLPLE_COLOR } from '../../../global-styles/globalStyles';
 import usePulseAnimate from '../../../custom-hooks/usePulseAnimate';
 
-function WantToMatchWithUserModal({ username = "Judy", _isWantToMatchWithUserModalOn, setIsGetToKnowUserModalOn, swiperRef }) {
+function WantToMatchWithUserModal({ username = "Judy", _isWantToMatchWithUserModalOn, setIsGetToKnowUserModalOn, swiperRef, sendRequestToMatchWithUser }) {
     const [isWantToMatchWithUserModalOn, setIsWantToMatchWithUserModalOn] = _isWantToMatchWithUserModalOn;
     const pulseAnim = usePulseAnimate()
 
@@ -17,15 +17,24 @@ function WantToMatchWithUserModal({ username = "Judy", _isWantToMatchWithUserMod
     function handleThumbsDownBtnTouch() {
         setTimeout(() => {
             swiperRef.current.swipeLeft()
-        }, 300)
-        setIsGetToKnowUserModalOn(false)
+        }, 500)
+        setIsWantToMatchWithUserModalOn(false)
+        setTimeout(() => {
+            setIsGetToKnowUserModalOn(false)
+        }, 300);
     }
 
     function handleSendAReqBtnTouch() {
+        setIsWantToMatchWithUserModalOn(false)
         setTimeout(() => {
-            swiperRef.current.swipeRight()
-        }, 300)
-        setIsGetToKnowUserModalOn(false)
+            setIsGetToKnowUserModalOn(false)
+        }, 300);
+        setTimeout(() => {
+            sendRequestToMatchWithUser()
+        }, 1000)
+        // GOAL: when the user wants to match with the target user by pressing this button have the following to occur:
+        // close the modal
+        // after half a second, 
     }
 
     return (

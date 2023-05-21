@@ -201,6 +201,7 @@ function Matching() {
         setTxtContainerHeight(event.nativeEvent.layout.height * .2);
     }
 
+
     function handleMatchReqBtnTouch() {
         setIsMatchReqResultsModalOn(true);
         ('FAIL TO SEND MATCH REQUEST 😔.' === matchReqResultsTxt) ? setWillTryToSendMatchReqAgain(true) : sendMatchRequest();
@@ -219,8 +220,6 @@ function Matching() {
 
             // GOAL: use the agora logic to send the match request to the target user.
             sendMatchRequest()
-
-
             setWillTryToSendMatchReqAgain(false)
         }
     }, [willTryToSendMatchReqAgain])
@@ -295,7 +294,7 @@ function Matching() {
                     </View>
                 </SafeAreaView>
             </LinearGradient>
-            <GetToKnowUserModal swiperRef={swiperRef} states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic }} />
+            <GetToKnowUserModal swiperRef={swiperRef} states={statesForGetToKnowUserModal} username='Judy' fns={{ setPotentialMatches, setWillRevealRestOfPic, sendRequestToMatchWithUser: handleMatchReqBtnTouch }} />
             <MatchReqSendResult states={statesForMatchReqSendResultModal} modalStateTxt={matchReqResultsTxt} username="Judy" fns={{ swipeRight: swiperRef?.current?.swipeRight }} />
         </>
     )
