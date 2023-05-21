@@ -1,5 +1,5 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { View, Animated, SafeAreaView, Platform, StyleSheet, Image, PanResponder, Dimensions, Text } from "react-native";
+import { View, Alert, SafeAreaView, Platform, StyleSheet, Dimensions } from "react-native";
 import { useEffect, useRef, useState } from 'react';
 import QuestionBtn from '../components/Suitor/button/Question';
 import GetToKnowUserModal from '../components/Suitor/modal/GetToKnowUserModal';
@@ -17,6 +17,7 @@ import RejectBtn from '../components/Suitor/button/RejectBtn';
 import MatchReqSendResult from '../components/Suitor/modal/MatchReqSendResult';
 
 const { height } = Dimensions.get('window');
+const IS_TESTING_SWIPE_LEFT_FAIL = true;
 
 const TESTING_USERS = [
     {
@@ -122,20 +123,38 @@ function Matching() {
         // console.log('swiped right: ', swiperRef.current.)
     }
 
-    
+    // GOAL: 
+    // the function below will be executed when the user swipes left 
+    // presses the reject user button 
+    // presses the reject user button in the modal that appears at the end of the questions modal
+    // make the function global (a helper function)
+
+    function trackUserRejection() {
+        // SEND THE POST REQUEST HERE TO TRACK THE USER'S REJECTION
+
+        if (IS_TESTING_SWIPE_LEFT_FAIL) {
+            const alertTouchOpts = [{ text: 'Try again.', onPress: trackUserRejection }, { text: 'Continue matching.' }]
+            setTimeout(() => {
+                Alert.alert("Failed to track rejection of user.", "Would you like to continue or try again?", alertTouchOpts)
+            }, 1000);
+        }
+    }
+
+    function handleOnSwipeLeft() {
+        trackUserRejection()
+    }
+
+
 
     function handleOnSwiped() {
         const _potentialMatchesCurrentIndex = potentialMatchesCurrentIndex + 1
-        
-        if(potentialMatches[_potentialMatchesCurrentIndex]){
+
+        if (potentialMatches[_potentialMatchesCurrentIndex]) {
             setIsNewUserQuestions(true);
             setUserQuestions(potentialMatches[_potentialMatchesCurrentIndex].questions)
             setPotentialMatchesCurrentIndex(_potentialMatchesCurrentIndex);
             return;
         }
-        console.log("will get more users to view: ")
-        // CASE: THE USER HAS REACHED THE END OF THE POTENTIAL MATCHES:
-        // GET THE NEXT BATCH OF MATCHES FOR THE USER TO VIEW
     }
 
     useEffect(() => {
@@ -252,6 +271,7 @@ function Matching() {
                                 // onSwipedLeft={handleOnSwipedLeft}
                                 onSwiped={handleOnSwiped}
                                 onSwipedRight={handleOnSwipedRight}
+                                onSwipedLeft={handleOnSwipeLeft}
                                 disableBottomSwipe
                                 disableTopSwipe
                                 animateCardOpacity
