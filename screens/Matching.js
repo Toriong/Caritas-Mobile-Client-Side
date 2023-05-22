@@ -15,7 +15,7 @@ import FadeUp from '../components/Animations/FadeUp';
 import MatchReqBtn from '../components/Suitor/button/MatchReqBtn';
 import RejectBtn from '../components/Suitor/button/RejectBtn';
 import MatchReqSendResult from '../components/Suitor/modal/MatchReqSendResult';
-import { trackUserRejection } from '../helperFns/global';
+import { trackUserRejection } from '../global-helper-fns/global';
 
 const { height } = Dimensions.get('window');
 

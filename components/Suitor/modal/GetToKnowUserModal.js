@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { StyleSheet, View, Image, TouchableOpacity, ScrollView, ActivityIndicator, Animated } from 'react-native';
+import { StyleSheet, View, Image, TouchableOpacity, ScrollView } from 'react-native';
 import Modal from "react-native-modal";
 import { BTN_TXT_LIGHT_COLOR, GLOBAL_ELEMENT_SHADOW_STYLES, EMOJI_SKIN_COLOR_DEFAULT, THUMBS_DOWN_PRESSED_COLOR, BLUE_PRIMARY_COLOR } from '../../../global-styles/globalStyles';
 import { HeadingTxt, PTxt } from '../../customTxts';
@@ -8,7 +8,7 @@ import { faArrowAltCircleRight, faArrowAltCircleLeft, faHeart, faThumbsDown, faM
 import FadeUpAndOut from '../../Animations/FadeUpAndOut';
 import HeartAnimation from '../../Animations/HeartAnimation';
 import Glow from '../../Animations/Glow';
-import { getAnimSequenceArr } from '../../../helperFns/components';
+import { getAnimSequenceArr } from '../../../global-helper-fns/components';
 import FadeInView from '../../Animations/FadeIn';
 import WantToMatchWithUserModal from './WantToMatchWithUser';
 
